@@ -1,6 +1,8 @@
 package dev.nikhil.lms.service;
 
-import dev.nikhil.lms.dto.CreateCourseRequest;
+import dev.nikhil.lms.dto.requestDTO.CreateCourseRequest;
+import dev.nikhil.lms.dto.responseDTO.CreateCourseResponse;
+import dev.nikhil.lms.mapper.CourseMapper;
 import dev.nikhil.lms.model.Course;
 import dev.nikhil.lms.model.Instructor;
 import dev.nikhil.lms.repository.CourseRepository;
@@ -23,6 +25,7 @@ public class CourseService {
 
     private final CourseRepository courseRepo;
     private final InstructorRepository instructorRepo;
+    private final CourseMapper mapper;
 
     public Page<Course> getCourses(int page, int size, String sortBy, String orderBy){
         Sort sort = orderBy.equalsIgnoreCase("desc")?
@@ -41,23 +44,19 @@ public class CourseService {
     }
 
     public Course saveCourse(CreateCourseRequest course){
-        System.out.println(course.getInstructorId());
+
         Instructor instructor = null;
         if(course.getInstructorId() != null)
-            instructor = instructorRepo
-                .findById(course.getInstructorId()).get();
+            instructor = instructorRepo.findById(course.getInstructorId()).get();
 
-        Course course1 = new Course();
-        course1.setTitle(course.getTitle());
-        course1.setPrice(course.getPrice());
+        Course course1 = mapper.toEntity(course);
         course1.setInstructor(instructor);
-        course1.setDescription(course.getDescription());
 
         return courseRepo.save(course1);
     }
 
     public void deleteCourse(UUID id){
-        courseRepo.findById(id);
+        courseRepo.deleteById(id);
     }
 
     public List<Course> saveBulkCourse(List<CreateCourseRequest> courses){
@@ -65,14 +64,10 @@ public class CourseService {
         for(CreateCourseRequest course: courses){
             Instructor instructor = null;
             if(course.getInstructorId() != null)
-                instructor = instructorRepo
-                        .findById(course.getInstructorId()).get();
+                instructor = instructorRepo.findById(course.getInstructorId()).get();
 
-            Course course1 = new Course();
-            course1.setTitle(course.getTitle());
-            course1.setPrice(course.getPrice());
+            Course course1 = mapper.toEntity(course);
             course1.setInstructor(instructor);
-            course1.setDescription(course.getDescription());
             bulkCourses.add(course1);
         }
         return courseRepo.saveAll(bulkCourses);

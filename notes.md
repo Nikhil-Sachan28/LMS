@@ -1,0 +1,2 @@
+- by default Fetch_type collection attribute are LAZY
+- and default attribute are EAGER

@@ -1,13 +1,12 @@
 package dev.nikhil.lms.controller;
 
-import dev.nikhil.lms.dto.CreateCourseRequest;
+import dev.nikhil.lms.dto.requestDTO.CreateCourseRequest;
 import dev.nikhil.lms.model.Course;
 import dev.nikhil.lms.service.CourseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -30,7 +29,7 @@ public class CourseController {
 
     @GetMapping
     public Page<Course> getAllCourses(
-            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "title") String sortBy,
             @RequestParam(defaultValue = "asc") String order

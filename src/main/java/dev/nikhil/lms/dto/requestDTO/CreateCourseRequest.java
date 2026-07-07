@@ -1,4 +1,4 @@
-package dev.nikhil.lms.dto;
+package dev.nikhil.lms.dto.requestDTO;
 
 import lombok.Getter;
 import lombok.Setter;
